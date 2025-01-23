@@ -20,10 +20,10 @@ set.seed(1)
 
 
 # Least Squares Method for Simple Linear Regression
-## Generate Data
+## Data Generation
 ```{r}
 beta = c(-0.5, 1)
-n = 100 ; x = rnorm(n) ; y = beta[1] + beta[2] * x + rnorm(n)
+n = 100 ; x = rnorm(n, mean = 1) ; y = beta[1] + beta[2] * x + rnorm(n)
 plot(x, y)
 ```
 
@@ -54,9 +54,190 @@ abline(ls(x - mean(x), y - mean(y))$intercept,
 legend("bottomright", c("BEFORE", "AFTER"), lty = 1, col=c("red", "blue"))
 ```
 
+## Plot of Simple Linear regression (Original vs. Centering)*
+```{r}
+rbind("Original" = ls(x, y), 
+      "Centerd X" = ls(x - mean(x), y),
+      "Centerd Y" = ls(x, y - mean(y)),
+      "Centerd X and Y" = ls(x - mean(x), y - mean(y)))
+```
+
+
+```{r echo=FALSE, fig.height=5}
+plot(x, y) ; abline(h = 0) ; abline(v = 0)
+abline(ls(x, y)$intercept, ls(x, y)$slope, col = "red")
+abline(ls(x - mean(x), y)$intercept, ls(x - mean(x), y)$slope, col = "orange")
+abline(ls(x, y - mean(y))$intercept, ls(x, y - mean(y))$slope, col = "yellow2")
+abline(ls(x - mean(x), y - mean(y))$intercept, ls(x - mean(x), y - mean(y))$slope, col = "green3")
+legend("bottomright", c("Original", "Centerd X", "Centerd Y", "Centerd X and Y"),
+       lty = 1, col=c("red", "orange", "yellow2", "green3"))
+```
+
+# Least Squares Method for Multiple Linear Regression
+
+## Multiple Linear Regression scheme
+
+- Consider the multiple linear regression:
+$$
+y = X \beta + \varepsilon.
+$$
+  - $\varepsilon = \left( \begin{matrix} \varepsilon_1 \\ \varepsilon_2 \\ \vdots \\ \varepsilon_n \end{matrix} \right) \in \mathbf R^n \where \varepsilon_1, \varepsilon_2, ..., \varepsilon_n \stackrel{iid}{\sim} N(0, \sigma^2)$.
+  \vt
+  - $y = \left( \begin{matrix} y_1 \\ y_2 \\ \vdots \\ y_n \end{matrix} \right) \in \mathbf R^n, \,\,\, X = \left[ \begin{matrix} 1&x_{11}&\dots&x_{1p} \\ 1&x_{21}&\dots&x_{2p} \\ \vdots & \vdots & \ddots&\vdots \\ 1&x_{n1}&\dots&x_{np} \end{matrix} \right]\in \mathbf R^{n \times (p+1)}, \,\,\, \text{and}\,\,\, \beta = \left( \begin{matrix} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_p \end{matrix} \right)\in \mathbf R^{p+1}$.
+  
+
+## Solution of Multiple Linear Regression
+
+- When a matrix $X^\top X \in \mathbf R^{(p + 1) \times (p + 1)}$ is invertible, we have
+$$
+\hat \beta = \left( X^\top X \right)^{-1} X^\top y.
+$$
 
 
 
+## Data Generation and Least Squares Estimator
+```{r}
+beta = c(1, 2, 3)
+n = 100 ; p = 3
+X = cbind("intercept" = 1, "x1" = rnorm(n), "x2" = rnorm(n))
+y = X %*% beta + rnorm(n)
+solve(t(X) %*% X) %*% t(X) %*% y # Original
+
+
+C = cbind(1, X[,2] - mean(X[,2]), X[,3] - mean(X[,3]))
+solve(t(C) %*% C) %*% t(C) %*% (y - mean(y)) # Centered X and Y
+```
+
+
+
+## Rank Condition of Design matrix $X$
+
+
+- We may notice that the matrix $X^\top X$ is not invertible under each of the following conditions:
+  
+  1. $N < p + 1$
+  
+  2. Two columns in $X$ coincide.
+  
+
+
+# Distribution of $\hat \beta$
+
+## Moments of the estimator $\hat \beta$
+$$
+\hat \beta = \left( X^\top X \right)^{-1} X^\top y
+$$
+
+
+
+- The estimate $\hat \beta$ of $\beta$ depends on the value of $\e$ because $N$ pairs of data $(x_1, y_1),..., (x_n, y_n )$ randomly occur. 
+
+
+\begin{align*}
+\E \left( \hat \beta\right) &= \left( X^\top X \right)^{-1} X^\top \E \left(y\right) 
+                             = \left( X^\top X \right)^{-1} X^\top X \beta = \beta \\
+\var \left( \hat \beta\right)
+&= \left( X^\top X \right)^{-1} X^\top \var(\e) X \left( X^\top X \right)^{-1}                              = \sigma^2 \left( X^\top X \right)^{-1}
+\end{align*}
+
+$$
+\left( \therefore \,\, \hat \beta \sim N(\beta, \sigma^2 \left( X^\top X \right)^{-1} )\right)
+$$
+
+
+
+# Distribution of the RSS Values
+
+## Hat matrix $H$
+
+
+- We explore the properties of the matrix
+$$
+H \stackrel{\triangle}{=} X (X^\top X)^{-1} X^\top \in \R^{n \times n}.
+$$
+
+-  The following are easy to derive but useful in the later part of this book:
+\begin{align*}
+\blue{H^2} &=  X (X^\top X)^{-1} X^\top X (X^\top X)^{-1} X^\top = X (X^\top X)^{-1} X^\top = \blue{H} \\
+\blue{(I - H)^2} &= I -2H + H^2 = I - 2H + H = \blue{I - H} \\
+\blue{HX} &= X (X^\top X)^{-1} X^\top X = \blue{X}.
+\end{align*}
+
+
+- Moreover, if we set $\hat y = X \hat \beta$, we have 
+$$
+\hat y = X \hat \beta = X (X^\top X)^{-1} X^\top y = Hy.
+$$
+
+- And we observe
+\begin{align*}
+y - \hat y &= (I - H)y = (I - H)(X \beta + \e) \\
+           &= X\beta + \e - HX\beta -H\e = X\beta + \e - X\beta -H\e\\
+           &= (I - H) \e.
+\end{align*}
+
+
+
+## The RSS with respect to Hat matrix $H$
+
+- Observe the equation
+\begin{align*}
+RSS = \|y - \hat y  \|^2 = \e^\top (I - H)^\top (I - H) \e = \e^\top (I - H)^2 \e = \e^\top (I - H) \e. 
+\end{align*}
+
+
+- To analysis $RSS$, we explore the properties of Hat matrix $H$.
+
+
+\begin{proposition} \label{I-H diagonalization}
+If $\rank(X) = p + 1$, we obtain the diagonalization
+$$
+P (I - H) P^\top = \diag( \underbrace{1, ..., 1}_{N-p-1}, \underbrace{0, ..., 0}_{p + 1} ),
+$$
+where $P$ is orthonormal matrix whose columns consist of eigenvectors of matrix $I - H.$ 
+\end{proposition}
+
+
+
+
+## Proof of Proposition \ref{I-H diagonalization}
+
+- If $\rank(X) = p + 1$, we have
+\begin{align*}
+\rank(H) &= \rank\left(X(X^\top X)^{-1} \cdot X^\top  \right) \\
+         &\leq \min \left\{ \rank(X(X^\top X)^{-1}), \rank(X) \right\} \\
+         &\leq \rank(X) = p + 1
+\end{align*}
+
+
+- If $\rank(X) = p + 1$, we have
+\begin{align*}
+\rank(H) &\geq \min \left\{ \rank(H), \rank(X) \right\} \\
+         &\geq \rank(HX) = \rank(X) = p + 1
+\end{align*}
+
+
+- We conclude if $\rank(X) = p + 1$, \blue{$\rank(H) = p + 1$}.
+
+
+
+
+## Proof of Proposition \ref{I-H diagonalization} (cntd.)
+
+- Recall the relationship $HX = X$:
+$$
+HX = H\BM | & | &   & | \\
+          X_1 & X_2 & \dots & X_{p+1} \\
+          | & | &   & |\EM
+   = \BM | & | &   & | \\
+          X_1 & X_2 & \dots & X_{p+1} \\
+          | & | &   & |\EM 
+$$
+
+- For $i$-th column, $i=1, ..., p+1$, we have
+$$
+HX_i = X_i.
+$$
 
 
 
