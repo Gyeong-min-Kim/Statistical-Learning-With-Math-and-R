@@ -4,7 +4,7 @@ author: "Jinju Kim"
 date: November 19, 2024
 institute: Department of Statistics \newline Sungshin Women’s University
 fonttheme: "serif"
-fontsize: 9pt
+fontsize: 8pt
 output:
   beamer_presentation:
     latex_engine: xelatex 

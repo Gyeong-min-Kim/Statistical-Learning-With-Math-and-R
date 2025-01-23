@@ -4,7 +4,7 @@ author: "Gyeong min Kim"
 date: November 19, 2024
 institute: Department of Statistics \newline Sungshin Women’s University
 fonttheme: "serif"
-fontsize: 9pt
+fontsize: 8pt
 output:
   beamer_presentation:
     latex_engine: xelatex 
@@ -14,13 +14,45 @@ header-includes:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+#knitr::opts_chunk$set(fig.height = 4, fig.width = 6)
+set.seed(1)
 ```
 
 
+# Least Squares Method for Simple Linear Regression
+## Generate Data
+```{r}
+beta = c(-0.5, 1)
+n = 100 ; x = rnorm(n) ; y = beta[1] + beta[2] * x + rnorm(n)
+plot(x, y)
+```
 
 
+## Least Squares algorithm for Simple Linear Regression
+```{r}
+ls = function(x, y){
+  beta_hat1 = crossprod(x - mean(x), y - mean(y)) / crossprod(x - mean(x))
+  beta_hat0 = mean(y) - beta_hat1 * mean(x)
+  
+  return(list("intercept" = as.numeric(beta_hat0),
+              "slope" = as.numeric(beta_hat1)))
+}
 
+beta ; ls(x, y)
+```
+
+## Plot of Simple Linear regression (Original vs. Centering)
+```{r}
+c(ls(x, y)$intercept, ls(x - mean(x), y - mean(y))$intercept)
+c(ls(x, y)$slope, ls(x - mean(x), y - mean(y))$slope)
+```
+```{r echo=FALSE, fig.height=5}
+plot(x, y) ; abline(h = 0) ; abline(v = 0)
+abline(ls(x, y)$intercept, ls(x, y)$slope, col = "red")
+abline(ls(x - mean(x), y - mean(y))$intercept, 
+       ls(x - mean(x), y - mean(y))$slope, col = "blue")
+legend("bottomright", c("BEFORE", "AFTER"), lty = 1, col=c("red", "blue"))
+```
 
 
 
