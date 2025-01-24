@@ -61,6 +61,7 @@
 \metropolis@enablesectionpage
 \makeatother
 \usepackage{xcolor,listings}
+\usepackage[dvipsnames]{xcolor}
 \lstset{upquote=true}
 \lstset{breaklines=true} 
 \lstset{breakatwhitespace=false}
@@ -136,10 +137,21 @@
 \newcommand{\emp}[1]{\textcolor{DarkRed}{#1}}
 \newcommand{\DB}[1]{\textcolor{DarkBlue}{#1}}
 \newcommand{\MB}[1]{\textcolor{myblue}{#1}}
+
+
+\definecolor{Navy}{RGB}{0,0,128}
+\newcommand{\navy}[1]{\textcolor{Navy}{#1}}
+
+
 \newcommand{\DC}[1]{\textcolor{DarkCyan}{#1}}
 \newcommand{\DR}[1]{\textcolor{DarkRed}{#1}}
 \newcommand{\vo}{\vspace{0.1cm}}
 \newcommand{\vt}{\vspace{0.25cm}}
+
+
+\newcommand{\rankbf}{\textbf{rank}}
+\newcommand{\diagbf}{\textbf{diag}}
+
 \DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\argmin}{argmin}
 \DeclareMathOperator*{\MISE}{MISE}
@@ -148,6 +160,9 @@
 \DeclareMathOperator*{\SSR}{SSR}
 \DeclareMathOperator*{\MSE}{MSE}
 \DeclareMathOperator*{\MSR}{MSR}
+
+
+\DeclareMathOperator*{\card}{card}
 \DeclareMathOperator*{\rank}{rank}
 \DeclareMathOperator*{\diag}{diag}
 \DeclareMathOperator{\df}{df}
@@ -159,3 +174,6 @@
 \newcommand{\M}{\ensuremath{\C[FixedConstants]}}
 %\newcommand{\Ml}[1]{\ensuremath{\Cl[FixedConstants]{#1}}}
 %\newcommand{\Mr}[1]{\ensuremath{\Cr{#1}}}
+
+
+\newcommand{\Eigen}{\mathcal{Eigen}}

@@ -192,7 +192,7 @@ RSS = \|y - \hat y  \|^2 = \e^\top (I - H)^\top (I - H) \e = \e^\top (I - H)^2 \
 \begin{proposition} \label{I-H diagonalization}
 If $\rank(X) = p + 1$, we obtain the diagonalization
 $$
-P (I - H) P^\top = \diag( \underbrace{1, ..., 1}_{N-p-1}, \underbrace{0, ..., 0}_{p + 1} ),
+P^\top (I - H) P = \diag( \underbrace{1, ..., 1}_{N-p-1}, \underbrace{0, ..., 0}_{p + 1} ),
 $$
 where $P$ is orthonormal matrix whose columns consist of eigenvectors of matrix $I - H.$ 
 \end{proposition}
@@ -217,9 +217,7 @@ where $P$ is orthonormal matrix whose columns consist of eigenvectors of matrix 
 \end{align*}
 
 
-- We conclude if $\rank(X) = p + 1$, \blue{$\rank(H) = p + 1$}.
-
-
+- We conclude that \navy{$\mathbf{\rankbf(X) = p + 1 \quad \Rightarrow \quad \rankbf(H) = p + 1}$}.
 
 
 ## Proof of Proposition \ref{I-H diagonalization} (cntd.)
@@ -231,13 +229,293 @@ HX = H\BM | & | &   & | \\
           | & | &   & |\EM
    = \BM | & | &   & | \\
           X_1 & X_2 & \dots & X_{p+1} \\
-          | & | &   & |\EM 
+          | & | &   & |\EM .
 $$
 
-- For $i$-th column, $i=1, ..., p+1$, we have
+- We have
 $$
-HX_i = X_i.
+HX_i = X_i \for i = 1, ..., p+1.
 $$
+
+- $\rank(X) = p + 1 \quad \Rightarrow \quad \dim(\Eigen(H)) = p + 1$ where $\Eigen(H)$ denotes the eigenspace with eigenvectors corresponding non-zero eigenvalue.
+
+
+- Therefore, each column of $X$ spans the eigenspace of $H$, which means \navy{$X_i$s are the eigenvectors of the Hat matrix $H$}.
+
+
+
+
+## Proof of Proposition \ref{I-H diagonalization} (cntd.)
+
+- Now, we analyze the relationship between $\Eigen(H)$ and $\mathcal{N}(I-H)$ where $\mathcal{N}$ denotes the nullspace of a matrix.
+
+
+- For arbitray $x \in \R^n$,
+$$
+Hx = x \quad \Rightarrow \quad (I-H)x = \mathbf{0},
+$$
+which means that the eigenvectors of $H$ belong to the nullspace of $I-H$. 
+
+
+- For arbitray $x \in \R^n$,
+$$
+(I-H)x = \mathbf{0} \quad \Rightarrow \quad Hx = x ,
+$$
+which means that the vectors of $\mathcal N (I-H)$ belong to the $\Eigen(H)$. 
+
+
+- Therefore, we have $\mathcal N (I-H) = \Eigen(H)$, and 
+$$
+\mathcal \dim \mathcal N (I-H) = \dim \Eigen(H) = p + 1.
+$$
+
+
+- Then we observe $\rank (I-H) = n - p - 1$
+
+
+## Proof of Proposition \ref{I-H diagonalization} (cntd.)
+
+
+- $I-H$ is diagonalizable matrix, since it is the symmetric and square matrix.
+
+- Since $\rank(I-H) = n - p - 1$, we have
+$$
+P^\top(I - H)P = \diag(\underbrace{\lambda_1, ..., \lambda_{n-p-1}}_{n-p-1}, \underbrace{0, ..., 0}_{p + 1}),
+$$
+where columns of $P$ are orthonormal and consist of eigenvectors of $I-H$.
+
+
+
+
+
+
+
+
+
+## Proof of Proposition \ref{I-H diagonalization} (cntd.)
+
+\begin{lemma} \label{eigenvalue}
+Let a real matrix $D \in \R^{n \times n}$ such that $D^2 = D$. Then, the eigenvalues of $D$ consist of only $0$ and $1$.
+\end{lemma}
+\begin{proof}
+Let $D \in \R^{n \times n}$ such that $D^2 = D$, and
+$$
+\exists v \in \R^n, \,\,\, Dv = \lambda v.
+$$
+Then, we observe
+\begin{align*}
+Dv = \lambda v \quad \Rightarrow \quad D^2v = \lambda D v \quad \Rightarrow \quad Dv = \lambda^2 v,
+\end{align*}
+since $D^2 = D$. Thus, we have 
+$$
+\lambda = \lambda^2 \quad \Rightarrow \quad \lambda = 0 \,\, \text{or} \,\, 1.
+$$
+\end{proof}
+
+
+
+
+## Proof of Proposition \ref{I-H diagonalization} (cntd.)
+
+- In order to proof Proposition \ref{I-H diagonalization}, we apply the following:
+
+  1. $\rank(X) = p+1 \quad \Rightarrow \quad \rank(H) = p + 1$
+  
+  2. $\mathcal \dim \mathcal N (I-H) = \dim \Eigen(H) = p + 1 \quad \Rightarrow \quad \rank(I-H) = n -p - 1$
+  
+  3. $P^\top(I - H)P = \diag(\underbrace{\lambda_1, ..., \lambda_{n-p-1}}_{n-p-1}, \underbrace{0, ..., 0}_{p + 1})$
+  
+  4. $(I - H)^2 = (I - H) \quad \Rightarrow \quad \lambda = 0\,\, \text{or} \,\, 1$.
+  
+
+- Therefore, if $\rank(X) = p+1$, we obtain
+$$
+P^\top (I - H) P = \diag( \underbrace{1, ..., 1}_{n-p-1}, \underbrace{0, ..., 0}_{p + 1} ).
+$$
+
+
+## Distribution of RSS values
+
+- Since the columns of $P$ are orthonormal,
+$$
+\exists u \in \R^n, \,\,\, \e = Pu, \quad \text{and then} \quad u = P^\top \e.
+$$
+
+- We have
+\begin{align*}
+RSS &= \e^\top (I - H) \e = u^\top P^\top (I-P) P u \\
+    &= u^\top \diag( \underbrace{1, ..., 1}_{n-p-1}, \underbrace{0, ..., 0}_{p + 1} ) u \\
+    &= \sum_{i = 1}^{n - p -1} u_i^2.
+\end{align*}
+
+
+
+- We observe 
+\begin{align*}
+\E(u) &= \E(P\e) = \textbf{0} \\
+\COV(u) &= \E(uu^\top) = P^\top E(\e\e^\top) P = \sigma^2 P^\top P = \sigma^2 I_n. 
+\end{align*}
+
+
+- Since $u \sim N_n(0, \sigma^2 I_n)$ and then $\frac{u}{\sigma} \sim N_n(0, I_n)$,
+$$
+\frac{RSS}{\sigma^2} = \sum_{i = 1}^{n - p -1} \left( \frac{u_i}{\sigma} \right)^2 \sim \mathcal{X}^2_{n-p-1}.
+$$
+
+
+## Plot of Chi-squared distribution
+```{r}
+i = 1 ; curve(dchisq(x, i), 0, 20, col = i)
+for(i in 2:10) curve(dchisq(x, i), 0, 20, col = i, add = TRUE, ann = FALSE)
+legend("topright", legend = 1:10, lty = 1, col = 1:10)
+```
+
+
+# Hypothesis Testing for $\hat \beta_j \neq 0$
+
+## Distribution of $\hat \beta$
+
+- In this section, we consider whether each of the $\beta_j,\,\,j = 0, 1,..., p,$ is zero or not based on the data.
+
+
+- Due to fluctuations in the $N$ random variables $\e_1, ..., \e_n$, the data occurred by chance.
+
+
+- Since the estimator $\hat \beta = (X^\top X)^{-1} X^\top y$ have randomness, we use the distribution of the estimator:
+
+
+$$
+\hat \beta \sim N_{p+1}\left( \beta,\,\, \sigma^2 (X^\top X)^{-1} \right).
+$$
+
+## Known or Unknwon $\sigma^2$
+
+- If we know $\sigma^2$, use the $z$-statistics
+$$
+z = \frac{\hat \beta_j -\beta_j}{\sqrt{ \VAR(\hat\beta_j)}} = \frac{\hat \beta_j -\beta_j}{\sigma \sqrt{(X^\top X)^{-1}_{jj}}} \sim N(0, 1).
+$$
+
+- If we do not know $\sigma^2$, use the $t$-statistics
+$$
+t = \frac{\hat \beta_j -\beta_j}{\sqrt{\widehat{\VAR}(\hat\beta_j)}} = \frac{\hat \beta_j -\beta_j}{\hat \sigma\sqrt{(X^\top X)^{-1}_{jj}}} \sim t_{n - p - 1}. 
+$$
+
+
+## Unknwon $\sigma^2$
+
+- When $\sigma^2$ is unknown, we need to estimate $\sigma^2$. Since $\frac{RSS}{\sigma^2} \sim \mathcal{X}^2_{n-p-1}$,
+$$
+\E\left( \frac{RSS}{n - p - 1} \right) = \sigma^2,
+$$
+where $RSS/(n-p-1)$ is unbiased estimator of $\sigma^2$
+
+
+$$ 
+\left( \therefore \,\, \hat \sigma^2 = \frac{RSS}{n - p - 1} \right)
+$$
+
+## Unknwon $\sigma^2$
+
+- Let $U \sim N(0, 1)$ and $V \sim \mathcal X_{df}$, then
+$$
+\frac{U}{\sqrt{V/{df}}} \sim t_{df}.
+$$
+
+
+- $t$-statistics
+\begin{align*}
+t &= \frac{\hat \beta_j -\beta_j}{\hat \sigma \sqrt{(X^\top X)^{-1}_{jj}}} \\
+  &= \frac{\hat \beta_j -\beta_j}{\sigma \sqrt{(X^\top X)^{-1}_{jj}}}  \sqrt \frac{\sigma^2}{\hat \sigma^2}
+   = \frac{\hat \beta_j -\beta_j}{\sigma \sqrt{(X^\top X)^{-1}_{jj}}} / \sqrt \frac{\hat \sigma^2}{\sigma^2}\\
+  &= \frac{\hat \beta_j -\beta_j}{\sigma \sqrt{(X^\top X)^{-1}_{jj}}} / \sqrt{ \frac{RSS}{\sigma^2} / (n - p - 1) } \\
+  &= \frac{U}{\sqrt{V/{df}}} \sim t_{df} = t_{n - p - 1}
+\end{align*}
+
+
+## [Example 1] Under $H_0: \beta_j = 0$
+```{r}
+n = 100 ; p = 1 ; rep = 1000
+T = NULL
+t = rep(0, rep)
+for(i in 1:rep){
+  x = rnorm(n) ; y = rnorm(n) 
+  fit = lm(y ~ x)
+  RSS = crossprod(y - fit$fitted.values) 
+  sigma_hat = sqrt( RSS / (n - p - 1) )
+  statistics = fit$coefficients[2] / ( sigma_hat / sqrt(crossprod(x - mean(x))) )
+  t[i] = statistics
+}
+```
+
+
+## Plot of Example 1
+```{r echo = FALSE}
+hist(t, breaks = sqrt(rep), probability=TRUE,
+     xlab="t", ylab="Probability Density Function",
+     main="Histogram of the value of t and its theoretical distribution in red")
+curve(dt(x, n - p - 1), -3, 3, type="l", col = "red", add = TRUE)
+```
+
+
+## [Example 2] Not under $H_0: \beta_j = 0$
+```{r}
+n = 100 ; p = 1 ; rep = 1000
+T = NULL
+t = rep(0, rep)
+for(i in 1:rep){
+  x = rnorm(n) ; y = 0.1*x + rnorm(n) 
+  fit = lm(y ~ x)
+  RSS = crossprod(y - fit$fitted.values) 
+  sigma_hat = sqrt( RSS / (n - p - 1) )
+  statistics = fit$coefficients[2] / ( sigma_hat / sqrt(crossprod(x - mean(x))) )
+  t[i] = statistics
+}
+```
+
+
+## Plot of Example 2
+```{r echo = FALSE}
+hist(t, breaks = sqrt(rep), probability=TRUE,
+     xlab="t", ylab="Probability Density Function",
+     main="Histogram of the value of t and its theoretical distribution in red")
+curve(dt(x, n - p - 1), -3, 3, type="l", col = "red", add = TRUE)
+```
+
+
+# Coefficient of Determination and the Detection of Collinearity
+
+## Three sum of squares
+
+- Let $W \in \R^{n \times n}$ be a matrix such that all the elements are $1/n$. Then we have $Wy = (\bar y, ..., \bar y )\in \R^n$
+
+- Total sum of squares (TSS):
+$$
+TSS \stackrel{\triangle}{=} \| y - \bar y \cdot \mathbf{1}  \|_2^2 
+                         =  \| y - W y \|_2^2 
+                         =  \| (I - W )y \|_2^2 
+$$
+
+- Residual sum of squares (RSS):
+$$
+RSS \stackrel{\triangle}{=} \| y - \hat y \|_2^2 
+                         =  \| y - H y \|_2^2 
+                         =  \| (I - H )y \|_2^2 
+$$
+
+- Explained sum of squares (ESS):
+$$
+ESS \stackrel{\triangle}{=} \| \hat y - \bar y \cdot \mathbf{1}  \|_2^2 
+                         =  \| H y - W y \|_2^2 
+                         =  \| (H - W )y \|_2^2 
+$$
+
+
+## Total sum of squares Decomposition
+
+\begin{align*}
+TSS = 
+\end{align*}
+
 
 
 
